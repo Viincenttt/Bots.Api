@@ -228,6 +228,7 @@ namespace Bots.Api.Tests.Unit.Client {
             // Assert
             var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode={(int)HttpStatusCode.Forbidden} ErrorCode={errorCode} ErrorMessage={errorMessage}";
             exception.Message.Should().Be(expectedExceptionMessage);
+            exception.Response.Should().Be(response);
             exception.Error.Should().NotBeNull();
             exception.Error.ErrorCode.Should().Be(errorCode);
             exception.Error.ErrorMessage.Should().Be(errorMessage);
@@ -250,6 +251,7 @@ namespace Bots.Api.Tests.Unit.Client {
             // Assert
             var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode=500";
             exception.Message.Should().Be(expectedExceptionMessage);
+            exception.Response.Should().Be(response);
         }
         
         [Fact]
@@ -272,6 +274,7 @@ namespace Bots.Api.Tests.Unit.Client {
             // Assert
             var expectedExceptionMessage = $@"Response indicates Success=false but HttpStatusCode={(int)HttpStatusCode.OK}";
             exception.Message.Should().Be(expectedExceptionMessage);
+            exception.Response.Should().Be(response);
         }
         
         private string CreatePlaceOrderRequestJson(PlaceOrderRequest request, BotsConfiguration options) {
