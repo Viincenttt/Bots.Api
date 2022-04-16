@@ -32,6 +32,4 @@ namespace Bots.Api.Tests.Integration.Client {
     // TODO: Unit tests
     
     // TODO: Automatically run unit tests
-    
-    // TODO: Upgrade to .NET core 6
 }
