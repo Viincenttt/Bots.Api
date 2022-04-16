@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Bots.Api.Client;
 using Bots.Api.Configuration;
+using Bots.Api.Exceptions;
 using Bots.Api.Models.Enums;
 using Bots.Api.Models.Orders;
 using FluentAssertions;
@@ -200,6 +202,55 @@ namespace Bots.Api.Tests.Unit.Client {
             order.TtlSecs.Should().Be(30);
             order.TtlType.Should().Be(TtlType.Seconds);
             order.Trades.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public async Task GetOrders_ApiExceptionCanBeParsed_BotsApiExceptionIsThrown() {
+            // Arrange
+            var options = CreateOptions();
+            var orderId = "order-id";
+            var errorCode = 301;
+            var errorMessage = "Forbidden";
+            var response = @$"{{
+    ""errorCode"": {errorCode},
+    ""errorMessage"": ""{errorMessage}"",
+    ""success"": false
+}}
+";
+            string expectedUrl = $"{options.Value.BaseEndpoint}v2/getOrders?signalProvider={options.Value.SignalProvider}&signalProviderKey={options.Value.SignalProviderKey}";
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.Expect(HttpMethod.Get, expectedUrl)
+                .Respond(HttpStatusCode.Forbidden, "application/json", response);
+            var orderClient = new BotsOrderApi(options, mockHttp.ToHttpClient());
+            
+            // Act
+            var exception = await Assert.ThrowsAsync<BotsApiException>(() => orderClient.GetOrders());
+
+            // Assert
+            var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode={(int)HttpStatusCode.Forbidden} ErrorCode={errorCode} ErrorMessage={errorMessage}";
+            exception.Message.Should().StartWith(expectedExceptionMessage);
+        }
+        
+        [Fact]
+        public async Task GetOrders_ApiExceptionCannotBeParsed_BotsApiExceptionIsThrown() {
+            // Arrange
+            var options = CreateOptions();
+            var orderId = "order-id";
+            var errorCode = 301;
+            var errorMessage = "Forbidden";
+            var response = @$"<html>Error</html>";
+            string expectedUrl = $"{options.Value.BaseEndpoint}v2/getOrders?signalProvider={options.Value.SignalProvider}&signalProviderKey={options.Value.SignalProviderKey}";
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.Expect(HttpMethod.Get, expectedUrl)
+                .Respond(HttpStatusCode.InternalServerError, "text/html", response);
+            var orderClient = new BotsOrderApi(options, mockHttp.ToHttpClient());
+            
+            // Act
+            var exception = await Assert.ThrowsAsync<BotsApiException>(() => orderClient.GetOrders());
+
+            // Assert
+            var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode=500";
+            exception.Message.Should().Be(expectedExceptionMessage);
         }
         
         private string CreatePlaceOrderRequestJson(PlaceOrderRequest request, BotsConfiguration options) {

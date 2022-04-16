@@ -59,8 +59,8 @@ namespace Bots.Api.Client {
                                            $"ErrorCode={error?.ErrorCode} " +
                                            $"ErrorMessage={error?.ErrorMessage}", resultContent, error);
             }
-            catch (Exception) {
-                throw new BotsApiException($"Http request was not successful: {(int)response.StatusCode}",resultContent);
+            catch (JsonReaderException) {
+                throw new BotsApiException($"Http request was not successful HttpStatusCode={(int)response.StatusCode}",resultContent);
             }
         }
         
