@@ -21,3 +21,4 @@ jobs:
       working-directory: src
     - name: Run unit tests
       run: dotnet test Bots.Api.Tests.Unit --no-restore --verbosity normal
+      working-directory: src
