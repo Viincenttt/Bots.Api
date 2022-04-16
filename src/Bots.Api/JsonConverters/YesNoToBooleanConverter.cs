@@ -3,8 +3,6 @@ using Newtonsoft.Json;
 
 namespace Bots.Api.JsonConverters {
     public class YesNoToBooleanConverter : JsonConverter {
-        public override bool CanWrite { get { return false; } }
-
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value == null) {
@@ -33,5 +31,7 @@ namespace Bots.Api.JsonConverters {
             }
             return false;
         }
+
+        public override bool CanWrite => true;
     }
 }

@@ -15,7 +15,7 @@ namespace Bots.Api.JsonConverters {
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             var value = reader.Value;
-            if (value == null) {
+            if (value == null || string.IsNullOrEmpty(value.ToString())) {
                 return null;
             }
 
@@ -28,5 +28,7 @@ namespace Bots.Api.JsonConverters {
         public override bool CanConvert(Type objectType) {
             return objectType == typeof(int);
         }
+
+        public override bool CanWrite => true;
     }
 }
