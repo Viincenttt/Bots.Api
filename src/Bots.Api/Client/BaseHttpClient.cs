@@ -74,7 +74,8 @@ namespace Bots.Api.Client {
 
         private JsonSerializerSettings CreateSerializerSettings() {
             return new JsonSerializerSettings {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented
             };
         }
     }
