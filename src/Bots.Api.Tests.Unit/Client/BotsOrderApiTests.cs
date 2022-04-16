@@ -208,7 +208,7 @@ namespace Bots.Api.Tests.Unit.Client {
         public async Task GetOrders_ApiExceptionCanBeParsed_BotsApiExceptionIsThrown() {
             // Arrange
             var options = CreateOptions();
-            var errorCode = 301;
+            var errorCode = "301";
             var errorMessage = "Forbidden";
             var response = @$"{{
     ""errorCode"": {errorCode},
@@ -228,6 +228,9 @@ namespace Bots.Api.Tests.Unit.Client {
             // Assert
             var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode={(int)HttpStatusCode.Forbidden} ErrorCode={errorCode} ErrorMessage={errorMessage}";
             exception.Message.Should().Be(expectedExceptionMessage);
+            exception.Error.Should().NotBeNull();
+            exception.Error.ErrorCode.Should().Be(errorCode);
+            exception.Error.ErrorMessage.Should().Be(errorMessage);
         }
         
         [Fact]
