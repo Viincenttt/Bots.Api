@@ -17,17 +17,5 @@ namespace Bots.Api.Extensions {
                 dictionary.Add(key, value);
             }
         }
-
-        public static void AddValueIfTrue(this IDictionary<string, string> dictionary, string key, bool value) {
-            if (value) {
-                dictionary.Add(key, bool.TrueString.ToLower());
-            }
-        }
-        
-        public static void AddValueIfTrue(this IDictionary<string, string> dictionary, string key, bool? value) {
-            if (value == true) {
-                dictionary.Add(key, bool.TrueString.ToLower());
-            }
-        }
     }
 }
