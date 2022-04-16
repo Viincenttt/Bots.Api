@@ -1,0 +1,24 @@
+name: Bots.Api - Build and test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.x',
+        include-prerelease: true
+    - name: Restore NuGet packages
+      run: dotnet restore
+      working-directory: src
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+      working-directory: src
+    - name: Run unit tests
+      run: dotnet test Bots.Api.Tests.Unit --no-restore --verbosity normal
