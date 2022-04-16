@@ -7,7 +7,7 @@ using Bots.Api.Models.Orders;
 using FluentAssertions;
 using Xunit;
 
-namespace Bots.Api.Tests.Client {
+namespace Bots.Api.Tests.Integration.Client {
     public class BotsIntegrationTestOrderApi : BaseBotsIntegrationTestClient {
         [Fact]
         public async Task PlaceOrder_CanPlaceOrder() {

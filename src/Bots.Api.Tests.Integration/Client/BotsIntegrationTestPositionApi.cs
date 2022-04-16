@@ -6,7 +6,7 @@ using Bots.Api.Models.Positions;
 using FluentAssertions;
 using Xunit;
 
-namespace Bots.Api.Tests.Client {
+namespace Bots.Api.Tests.Integration.Client {
     public class BotsIntegrationTestPositionApi : BaseBotsIntegrationTestClient {
         [Fact]
         public async Task PlaceOrder_CanPlaceOrder() {
@@ -30,8 +30,6 @@ namespace Bots.Api.Tests.Client {
     }
     
     // TODO: Unit tests
-    
-    // TODO: Exception handling
     
     // TODO: Automatically run unit tests
     

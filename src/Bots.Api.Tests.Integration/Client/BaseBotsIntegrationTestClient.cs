@@ -3,7 +3,7 @@ using Bots.Api.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace Bots.Api.Tests.Client {
+namespace Bots.Api.Tests.Integration.Client {
     public abstract class BaseBotsIntegrationTestClient {
         protected IOptions<BotsConfiguration> CreateOptions() {
             var configuration = GetConfiguration();
