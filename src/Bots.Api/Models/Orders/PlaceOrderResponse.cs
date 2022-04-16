@@ -4,10 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Bots.Api.Models.Orders {
-    public class PlaceOrderResponse {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-        
+    public class PlaceOrderResponse : BaseResponseModel {
         [JsonProperty("orderId")]
         public string OrderId { get; set; }
         

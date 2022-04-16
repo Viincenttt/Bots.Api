@@ -32,4 +32,6 @@ namespace Bots.Api.Tests.Client {
     // TODO: Unit tests
     
     // TODO: Exception handling
+    
+    // TODO: Automatically run unit tests
 }

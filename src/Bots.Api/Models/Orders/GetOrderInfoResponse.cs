@@ -6,10 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Bots.Api.Models.Orders {
-    public class GetOrderInfoResponse {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-        
+    public class GetOrderInfoResponse : BaseResponseModel {
         [JsonProperty("orderId")]
         public string OrderId { get; set; }
         
