@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Bots.Api.Client;
@@ -19,7 +18,6 @@ namespace Bots.Api.Tests.Unit.Client {
             // Arrange
             var options = CreateOptions();
             string expectedUrl = $"{options.Value.BaseEndpoint}v2/placeOrder";
-            var mockHttp = new MockHttpMessageHandler();
             var orderId = "order-id";
             var response = @$"{{
     ""isBeingCanceled"": ""no"",
@@ -28,8 +26,9 @@ namespace Bots.Api.Tests.Unit.Client {
     ""success"": true
 }}";
             var placeOrderRequest = CreatePlaceOrderRequest(options.Value);
+            var mockHttp = new MockHttpMessageHandler();
             mockHttp.Expect(HttpMethod.Post, expectedUrl)
-                .WithPartialContent(CreatePlaceOrderResponse(placeOrderRequest, options.Value))
+                .WithPartialContent(CreatePlaceOrderRequestJson(placeOrderRequest, options.Value))
                 .Respond("application/json", response);
             var orderClient = new BotsOrderApi(options, mockHttp.ToHttpClient());
 
@@ -44,7 +43,36 @@ namespace Bots.Api.Tests.Unit.Client {
             result.Success.Should().BeTrue();
         }
 
-        private string CreatePlaceOrderResponse(PlaceOrderRequest request, BotsConfiguration options) {
+        [Fact]
+        public async Task GetOrderState_DefaultBehaviour_ResponseIsParsed() {
+            // Arrange
+            var options = CreateOptions();
+            var orderId = "order-id";
+            string expectedUrl = $"{options.Value.BaseEndpoint}v2/getOrderState?signalProvider={options.Value.SignalProvider}&signalProviderKey={options.Value.SignalProviderKey}&orderId={orderId}";
+            var placeOrderRequest = CreateGetOrderStateRequest(options.Value, orderId);
+            var response =  $@"{{
+    ""isBeingCanceled"": ""no"",
+    ""orderId"": ""{orderId}"",
+    ""status"": ""acceptedByExch"",
+    ""success"": true
+}}";
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.Expect(HttpMethod.Get, expectedUrl)
+                .Respond("application/json", response);
+            var orderClient = new BotsOrderApi(options, mockHttp.ToHttpClient());
+
+            // Act
+            var result = await orderClient.GetOrderState(placeOrderRequest);
+
+            // Assert
+            mockHttp.VerifyNoOutstandingExpectation();
+            result.OrderId.Should().Be(orderId);
+            result.IsBeingCanceled.Should().BeFalse();
+            result.Status.Should().Be(OrderStatus.AcceptedByExchange);
+            result.Success.Should().BeTrue();
+        }
+
+        private string CreatePlaceOrderRequestJson(PlaceOrderRequest request, BotsConfiguration options) {
             return $@"{{
   ""extId"": ""{request.ExternalId}"",
   ""exchange"": ""{request.Exchange.ToString().ToLower()}"",
@@ -82,6 +110,14 @@ namespace Bots.Api.Tests.Unit.Client {
             };
         }
 
+        private GetOrderStateRequest CreateGetOrderStateRequest(BotsConfiguration options, string orderId) {
+            return new GetOrderStateRequest {
+                SignalProvider = options.SignalProvider,
+                SignalProviderKey = options.SignalProviderKey,
+                OrderId = orderId
+            };
+        }
+        
         private IOptions<BotsConfiguration> CreateOptions() {
             return Options.Create(new BotsConfiguration {
                 BaseEndpoint = "https://signal.revenyou.io/paper/api/signal/",
