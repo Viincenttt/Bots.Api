@@ -22,7 +22,7 @@ namespace Bots.Api.Tests.Integration.Client {
                 Exchange = Exchange.Binance,
                 BaseAsset = "BTC",
                 QuoteAsset = "USDT",
-                LimitPrice = 40000.56m,
+                LimitPrice = 41000.56m,
                 QuantityPercent = 25m,
                 Side = OrderSide.Sell,
                 TtlType = TtlType.Seconds,

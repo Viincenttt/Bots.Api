@@ -13,5 +13,9 @@ namespace Bots.Api.Models.Orders {
         [JsonProperty("price")]
         [JsonConverter(typeof(DecimalToStringConverter))]
         public decimal Price { get; set; }
+        
+        [JsonProperty("qtyPct")]
+        [JsonConverter(typeof(DecimalToStringConverter))]
+        public decimal QuantityPercent { get; set; }
     }
 }

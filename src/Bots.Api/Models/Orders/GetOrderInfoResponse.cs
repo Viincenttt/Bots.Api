@@ -45,6 +45,9 @@ namespace Bots.Api.Models.Orders {
         [JsonConverter(typeof(DecimalToStringConverter))]
         public decimal StopPrice { get; set; }
         
+        [JsonProperty("priceAvgExec")]
+        public decimal AveragePriceExecution { get; set; }
+        
         [JsonProperty("qtyPct")]
         [JsonConverter(typeof(DecimalToStringConverter))]
         public decimal QuantityPercent { get; set; }
@@ -77,8 +80,8 @@ namespace Bots.Api.Models.Orders {
         
         [JsonProperty("rejReason")]
         public string RejectionReason { get; set; }
-        
+
         [JsonProperty("trades")]
-        public IEnumerable<GetOrderInfoTradesResponse> Trades { get; set; }
+        public IEnumerable<GetOrderInfoTradesResponse> Trades { get; set; } = new List<GetOrderInfoTradesResponse>();
     }
 }
