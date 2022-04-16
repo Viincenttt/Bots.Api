@@ -34,4 +34,6 @@ namespace Bots.Api.Tests.Client {
     // TODO: Exception handling
     
     // TODO: Automatically run unit tests
+    
+    // TODO: Upgrade to .NET core 6
 }

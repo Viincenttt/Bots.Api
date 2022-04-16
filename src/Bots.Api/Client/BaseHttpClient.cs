@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Bots.Api.Exceptions;
+using Bots.Api.Models.Error;
 using Newtonsoft.Json;
 
 namespace Bots.Api.Client {
@@ -51,7 +52,16 @@ namespace Bots.Api.Client {
                 return JsonConvert.DeserializeObject<T>(resultContent);
             }
 
-            throw new BotsApiException($"Unknown http exception with status code: {(int)response.StatusCode}",resultContent);
+            try {
+                var error = JsonConvert.DeserializeObject<ErrorResponse>(resultContent);
+                throw new BotsApiException($"Http request was not successful " +
+                                           $"HttpStatusCode={(int) response.StatusCode} " +
+                                           $"ErrorCode={error?.ErrorCode} " +
+                                           $"ErrorMessage={error?.ErrorMessage}", resultContent, error);
+            }
+            catch (Exception) {
+                throw new BotsApiException($"Http request was not successful: {(int)response.StatusCode}",resultContent);
+            }
         }
         
         protected virtual HttpRequestMessage CreateHttpRequest(HttpMethod method, string relativeUri, HttpContent content = null) {
