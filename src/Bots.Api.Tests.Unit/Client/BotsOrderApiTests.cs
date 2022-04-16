@@ -208,7 +208,6 @@ namespace Bots.Api.Tests.Unit.Client {
         public async Task GetOrders_ApiExceptionCanBeParsed_BotsApiExceptionIsThrown() {
             // Arrange
             var options = CreateOptions();
-            var orderId = "order-id";
             var errorCode = 301;
             var errorMessage = "Forbidden";
             var response = @$"{{
@@ -228,16 +227,13 @@ namespace Bots.Api.Tests.Unit.Client {
 
             // Assert
             var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode={(int)HttpStatusCode.Forbidden} ErrorCode={errorCode} ErrorMessage={errorMessage}";
-            exception.Message.Should().StartWith(expectedExceptionMessage);
+            exception.Message.Should().Be(expectedExceptionMessage);
         }
         
         [Fact]
         public async Task GetOrders_ApiExceptionCannotBeParsed_BotsApiExceptionIsThrown() {
             // Arrange
             var options = CreateOptions();
-            var orderId = "order-id";
-            var errorCode = 301;
-            var errorMessage = "Forbidden";
             var response = @$"<html>Error</html>";
             string expectedUrl = $"{options.Value.BaseEndpoint}v2/getOrders?signalProvider={options.Value.SignalProvider}&signalProviderKey={options.Value.SignalProviderKey}";
             var mockHttp = new MockHttpMessageHandler();
@@ -250,6 +246,28 @@ namespace Bots.Api.Tests.Unit.Client {
 
             // Assert
             var expectedExceptionMessage = $@"Http request was not successful HttpStatusCode=500";
+            exception.Message.Should().Be(expectedExceptionMessage);
+        }
+        
+        [Fact]
+        public async Task GetOrders_SuccessIsFalse_BotsApiExceptionIsThrown() {
+            // Arrange
+            var options = CreateOptions();
+            var response =  $@"{{
+    ""orders"": [],
+    ""success"": false
+}}";
+            string expectedUrl = $"{options.Value.BaseEndpoint}v2/getOrders?signalProvider={options.Value.SignalProvider}&signalProviderKey={options.Value.SignalProviderKey}";
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.Expect(HttpMethod.Get, expectedUrl)
+                .Respond(HttpStatusCode.OK, "application/json", response);
+            var orderClient = new BotsOrderApi(options, mockHttp.ToHttpClient());
+            
+            // Act
+            var exception = await Assert.ThrowsAsync<BotsApiException>(() => orderClient.GetOrders());
+
+            // Assert
+            var expectedExceptionMessage = $@"Response indicates Success=false but HttpStatusCode={(int)HttpStatusCode.OK}";
             exception.Message.Should().Be(expectedExceptionMessage);
         }
         

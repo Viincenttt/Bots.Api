@@ -4,10 +4,7 @@ using Bots.Api.Models.Enums;
 using Newtonsoft.Json;
 
 namespace Bots.Api.Models.Positions {
-    public class GetBotPositionsResponse {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-        
+    public class GetBotPositionsResponse : BaseResponseModel {
         [JsonProperty("signalProvider")]
         public string SignalProvider { get; set; }
         

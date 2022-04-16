@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Bots.Api.Exceptions;
+using Bots.Api.Models;
 using Bots.Api.Models.Error;
 using Newtonsoft.Json;
 
@@ -17,23 +18,15 @@ namespace Bots.Api.Client {
             this._httpClient = httpClient ?? new HttpClient();
         }
         
-        protected async Task<T> GetAsync<T>(string relativeUri) {
+        protected async Task<T> GetAsync<T>(string relativeUri) where T : BaseResponseModel {
             return await this.SendHttpRequest<T>(HttpMethod.Get, relativeUri).ConfigureAwait(false);
         }
         
-        protected async Task<T> PostAsync<T>(string relativeUri, object data) {
+        protected async Task<T> PostAsync<T>(string relativeUri, object data) where T : BaseResponseModel {
             return await this.SendHttpRequest<T>(HttpMethod.Post, relativeUri, data).ConfigureAwait(false); ;
         }
         
-        protected async Task<T> PatchAsync<T>(string relativeUri, object data) {
-            return await this.SendHttpRequest<T>(new HttpMethod("PATCH"), relativeUri, data).ConfigureAwait(false); ;
-        }
-        
-        protected async Task DeleteAsync(string relativeUri, object data = null) {
-            await this.SendHttpRequest<object>(HttpMethod.Delete, relativeUri, data).ConfigureAwait(false); ;
-        }
-        
-        private async Task<T> SendHttpRequest<T>(HttpMethod httpMethod, string relativeUri, object data = null) {
+        private async Task<T> SendHttpRequest<T>(HttpMethod httpMethod, string relativeUri, object data = null) where T : BaseResponseModel {
             HttpRequestMessage httpRequest = this.CreateHttpRequest(httpMethod, relativeUri);
             if (data != null) {
                 var jsonData = JsonConvert.SerializeObject(data, CreateSerializerSettings());
@@ -45,11 +38,16 @@ namespace Bots.Api.Client {
             return await this.ProcessHttpResponseMessage<T>(response).ConfigureAwait(false);
         }
         
-        private async Task<T> ProcessHttpResponseMessage<T>(HttpResponseMessage response) {
+        private async Task<T> ProcessHttpResponseMessage<T>(HttpResponseMessage response) where T : BaseResponseModel {
             var resultContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode) {
-                return JsonConvert.DeserializeObject<T>(resultContent);
+                var result = JsonConvert.DeserializeObject<T>(resultContent);
+                if (result?.Success == true) {
+                    return result;
+                }
+                
+                throw new BotsApiException($"Response indicates Success=false but HttpStatusCode={(int)response.StatusCode}", resultContent);
             }
 
             try {
