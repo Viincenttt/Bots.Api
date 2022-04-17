@@ -45,6 +45,32 @@ namespace Bots.Api.Tests.Unit.Client {
             result.Status.Should().Be(OrderStatus.AcceptedByExchange);
             result.Success.Should().BeTrue();
         }
+        
+        [Fact]
+        public async Task CancelOrder_DefaultBehaviour_ResponseIsParsed() {
+            // Arrange
+            var options = CreateOptions();
+            string expectedUrl = $"{options.Value.BaseEndpoint}v2/cancelOrder";
+            var orderId = "order-id";
+            var response = @$"{{
+    ""success"": true
+}}";
+            var cancelOrderRequest = new CancelOrderRequest {
+                ExternalOrderId = orderId
+            };
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.Expect(HttpMethod.Post, expectedUrl)
+                .WithPartialContent(CreateCancelOrderRequestJson(cancelOrderRequest, options.Value))
+                .Respond("application/json", response);
+            var orderClient = new BotsOrderApi(options, mockHttp.ToHttpClient());
+
+            // Act
+            var result = await orderClient.CancelOrder(cancelOrderRequest);
+
+            // Assert
+            mockHttp.VerifyNoOutstandingExpectation();
+            result.Success.Should().BeTrue();
+        }
 
         [Fact]
         public async Task GetOrderState_DefaultBehaviour_ResponseIsParsed() {
@@ -292,6 +318,14 @@ namespace Bots.Api.Tests.Unit.Client {
   ""ttlType"": ""secs"",
   ""ttlSecs"": ""{request.TtlSecs.ToString(CultureInfo.InvariantCulture)}"",
   ""responseType"": ""{request.ResponseType.ToString().ToUpper()}"",
+  ""signalProvider"": ""{options.SignalProvider}"",
+  ""signalProviderKey"": ""{options.SignalProviderKey}""
+}}";
+        }
+
+        private string CreateCancelOrderRequestJson(CancelOrderRequest request, BotsConfiguration options) {
+            return $@"{{
+  ""extId"": ""{request.ExternalOrderId}"",
   ""signalProvider"": ""{options.SignalProvider}"",
   ""signalProviderKey"": ""{options.SignalProviderKey}""
 }}";
