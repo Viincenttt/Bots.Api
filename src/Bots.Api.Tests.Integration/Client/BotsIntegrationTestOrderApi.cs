@@ -23,8 +23,7 @@ namespace Bots.Api.Tests.Integration.Client {
                 LimitPrice = 41000.56m,
                 QuantityPercent = 25m,
                 Side = OrderSide.Sell,
-                TtlType = TtlType.Seconds,
-                TtlSecs = 30,
+                TtlType = TtlType.GoodTillCanceled,
                 Type = OrderType.Limit,
                 ResponseType = ResponseType.Ack
             };
@@ -68,10 +67,30 @@ namespace Bots.Api.Tests.Integration.Client {
             var client = new BotsOrderApi(options, httpClient);
             
             // Act
-            var orders = await client.GetOrders();
+            var result = await client.GetOrders();
 
             // Assert
-            orders.Should().NotBeNull();
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task CancelAllOpenOrders() {
+            // Arrange
+            var options = CreateOptions();
+            var httpClient = new HttpClient();
+            var client = new BotsOrderApi(options, httpClient);
+            
+            // Act
+            var result = await client.GetOrders();
+            foreach (var order in result.Orders) {
+                var cancelOrderResult = await client.CancelOrder(new CancelOrderRequest {
+                    ExternalOrderId = order.ExternalId
+                });
+                cancelOrderResult.Success.Should().BeTrue();
+            }
+
+            // Assert
+            result.Should().NotBeNull();
         }
     }
 }

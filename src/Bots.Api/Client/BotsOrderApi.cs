@@ -21,6 +21,12 @@ namespace Bots.Api.Client {
             return await this.PostAsync<PlaceOrderResponse>("v2/placeOrder", request);
         }
 
+        public async Task<CancelOrderResponse> CancelOrder(CancelOrderRequest request) {
+            request.SignalProvider = _options.SignalProvider;
+            request.SignalProviderKey = _options.SignalProviderKey;
+            return await this.PostAsync<CancelOrderResponse>("v2/cancelOrder", request);
+        }
+
         public async Task<GetOrderStateResponse> GetOrderState(GetOrderStateRequest request) {
             var queryParameters = new Dictionary<string, string>();
             queryParameters.AddValueIfNotNullOrEmpty("signalProvider", _options.SignalProvider);
