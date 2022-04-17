@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Bots.Api.Tests.Integration.Client {
     public class BotsIntegrationTestOrderApi : BaseBotsIntegrationTestClient {
-        [Fact(Skip = "Integration test")]
+        [Fact]
         public async Task PlaceOrder_CanPlaceOrder() {
             // Arrange
             var options = CreateOptions();
@@ -46,7 +46,7 @@ namespace Bots.Api.Tests.Integration.Client {
             getOrderStateResult.OrderId.Should().Be(getOrderStateRequest.OrderId);
         }
         
-        [Fact(Skip = "Integration test")]
+        [Fact]
         public async Task GetOrdersInfo_ReturnsOrderInfo() {
             // Arrange
             var options = CreateOptions();
@@ -66,7 +66,7 @@ namespace Bots.Api.Tests.Integration.Client {
             order.OrderId.Should().Be(getOrderInfoRequest.OrderId);
         }
 
-        [Fact(Skip = "Integration test")]
+        [Fact]
         public async Task GetOrders_ReturnsOrders() {
             // Arrange
             var options = CreateOptions();

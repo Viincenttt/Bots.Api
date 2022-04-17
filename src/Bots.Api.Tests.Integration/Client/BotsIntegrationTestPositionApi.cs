@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Bots.Api.Tests.Integration.Client {
     public class BotsIntegrationTestPositionApi : BaseBotsIntegrationTestClient {
-        [Fact(Skip = "Integration test")]
+        [Fact]
         public async Task PlaceOrder_CanPlaceOrder() {
             // Arrange
             var options = CreateOptions();
