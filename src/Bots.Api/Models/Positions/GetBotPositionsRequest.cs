@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Bots.Api.Models.Positions {
-    public class GetBotPositionsRequest : BaseRequestModel {
+    public class GetBotPositionsRequest {
         [JsonProperty("exchange")]
         [JsonConverter(typeof(StringEnumConverter))] 
         public Exchange Exchange { get; set; }

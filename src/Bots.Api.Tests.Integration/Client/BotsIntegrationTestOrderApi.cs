@@ -16,8 +16,6 @@ namespace Bots.Api.Tests.Integration.Client {
             var httpClient = new HttpClient();
             var client = new BotsOrderApi(options, httpClient);
             var placeOrderRequest = new PlaceOrderRequest {
-                SignalProvider = options.Value.SignalProvider,
-                SignalProviderKey = options.Value.SignalProviderKey,
                 ExternalId = Guid.NewGuid().ToString(),
                 Exchange = Exchange.Binance,
                 BaseAsset = "BTC",
@@ -34,8 +32,6 @@ namespace Bots.Api.Tests.Integration.Client {
             // Act
             var placeOrderResult = await client.PlaceOrder(placeOrderRequest);
             var getOrderStateRequest = new GetOrderStateRequest {
-                SignalProvider = options.Value.SignalProvider,
-                SignalProviderKey = options.Value.SignalProviderKey,
                 OrderId = placeOrderResult.OrderId
             };
             var getOrderStateResult = await client.GetOrderState(getOrderStateRequest);
@@ -53,8 +49,6 @@ namespace Bots.Api.Tests.Integration.Client {
             var httpClient = new HttpClient();
             var client = new BotsOrderApi(options, httpClient);
             var getOrderInfoRequest = new GetOrderInfoRequest {
-                SignalProvider = options.Value.SignalProvider,
-                SignalProviderKey = options.Value.SignalProviderKey,
                 OrderId = "bem-bot-5fdf0108e8f42a4ffc5fa0a1-1650101488-0001-3429175148"
             };
             

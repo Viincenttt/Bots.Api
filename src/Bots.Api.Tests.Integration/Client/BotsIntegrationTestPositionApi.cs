@@ -15,8 +15,6 @@ namespace Bots.Api.Tests.Integration.Client {
             var httpClient = new HttpClient();
             var client = new BotsPositionApi(options, httpClient);
             var request = new GetBotPositionsRequest {
-                SignalProvider = options.Value.SignalProvider,
-                SignalProviderKey = options.Value.SignalProviderKey,
                 Exchange = Exchange.Binance,
                 BaseAsset = "USDT"
             };

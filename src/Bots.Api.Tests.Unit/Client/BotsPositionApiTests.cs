@@ -17,8 +17,6 @@ namespace Bots.Api.Tests.Unit.Client {
             // Arrange
             var options = CreateOptions();
             var request = new GetBotPositionsRequest {
-                SignalProvider = options.Value.SignalProvider,
-                SignalProviderKey = options.Value.SignalProviderKey,
                 Exchange = Exchange.Binance,
                 BaseAsset = "USDT"
             };

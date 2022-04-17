@@ -299,8 +299,6 @@ namespace Bots.Api.Tests.Unit.Client {
 
         private PlaceOrderRequest CreatePlaceOrderRequest(BotsConfiguration options) {
             return new PlaceOrderRequest {
-                SignalProvider = options.SignalProvider,
-                SignalProviderKey = options.SignalProviderKey,
                 ExternalId = Guid.NewGuid().ToString(),
                 Exchange = Exchange.Binance,
                 BaseAsset = "BTC",
@@ -317,16 +315,12 @@ namespace Bots.Api.Tests.Unit.Client {
 
         private GetOrderStateRequest CreateGetOrderStateRequest(BotsConfiguration options, string orderId) {
             return new GetOrderStateRequest {
-                SignalProvider = options.SignalProvider,
-                SignalProviderKey = options.SignalProviderKey,
                 OrderId = orderId
             };
         }
         
         private GetOrderInfoRequest CreateGetOrderInfoRequest(BotsConfiguration options, string orderId) {
             return new GetOrderInfoRequest {
-                SignalProvider = options.SignalProvider,
-                SignalProviderKey = options.SignalProviderKey,
                 OrderId = orderId
             };
         }

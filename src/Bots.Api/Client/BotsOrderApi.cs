@@ -16,6 +16,8 @@ namespace Bots.Api.Client {
         }
 
         public async Task<PlaceOrderResponse> PlaceOrder(PlaceOrderRequest request) {
+            request.SignalProvider = _options.SignalProvider;
+            request.SignalProviderKey = _options.SignalProviderKey;
             return await this.PostAsync<PlaceOrderResponse>("v2/placeOrder", request);
         }
 

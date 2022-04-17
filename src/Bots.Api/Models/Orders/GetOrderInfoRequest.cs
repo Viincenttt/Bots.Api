@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Bots.Api.Models.Orders {
-    public class GetOrderInfoRequest : BaseRequestModel {
+    public class GetOrderInfoRequest {
         [JsonProperty("orderId")]
         public string OrderId { get; set; }
         
