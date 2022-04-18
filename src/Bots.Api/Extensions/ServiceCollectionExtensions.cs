@@ -9,8 +9,8 @@ namespace Bots.Api.Extensions {
     public static class ServiceCollectionExtensions {
         public static void AddBotsApiServices(this IServiceCollection serviceCollection, IConfiguration configuration) {
             serviceCollection.Configure<BotsConfiguration>(configuration);
-            serviceCollection.AddScoped<IBotsOrderApi, BotsOrderApi>();
-            serviceCollection.AddScoped<IBotsPositionApi, BotsPositionApi>();
+            serviceCollection.AddTransient<IBotsOrderApi, BotsOrderApi>();
+            serviceCollection.AddTransient<IBotsPositionApi, BotsPositionApi>();
         }
     }
 }
