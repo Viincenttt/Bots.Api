@@ -38,10 +38,6 @@ namespace Bots.Api.Models.Orders {
         [JsonConverter(typeof(DecimalToStringConverter))]
         public decimal QuantityPercent { get; set; }
         
-        [JsonProperty("qtyAbs")]
-        [JsonConverter(typeof(DecimalToStringConverter))]
-        public decimal QuantityAbs { get; set; }
-        
         [JsonProperty("ttlType")]
         [JsonConverter(typeof(StringEnumConverter))] 
         public TtlType TtlType { get; set; }

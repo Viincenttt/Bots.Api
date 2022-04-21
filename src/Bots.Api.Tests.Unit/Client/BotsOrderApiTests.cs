@@ -314,7 +314,6 @@ namespace Bots.Api.Tests.Unit.Client {
   ""limitPrice"": ""{request.LimitPrice.ToString(CultureInfo.InvariantCulture)}"",
   ""stopPrice"": ""{request.StopPrice.ToString(CultureInfo.InvariantCulture)}"",
   ""qtyPct"": ""{request.QuantityPercent.ToString(CultureInfo.InvariantCulture)}"",
-  ""qtyAbs"": ""{request.QuantityAbs.ToString(CultureInfo.InvariantCulture)}"",
   ""ttlType"": ""secs"",
   ""ttlSecs"": ""{request.TtlSecs.ToString(CultureInfo.InvariantCulture)}"",
   ""responseType"": ""{request.ResponseType.ToString().ToUpper()}"",
