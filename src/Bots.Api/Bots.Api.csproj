@@ -2,6 +2,19 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>BotsIO.Api</Title>
+        <Authors>Vincent Kok</Authors>
+        <Description>This is a wrapper for the bots.io REST webservice</Description>
+        <PackageProjectUrl>https://github.com/Viincenttt/Bots.Api</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Viincenttt/Bots.Api</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>Bots.io</PackageTags>
+        <PackageVersion>0.1.0-beta</PackageVersion>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <FileVersion>0.1.0</FileVersion>
+        <PackageId>BotsIO.Api</PackageId>
+        <PackageLicenseUrl>https://github.com/Viincenttt/Bots.Api/blob/master/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <ItemGroup>
