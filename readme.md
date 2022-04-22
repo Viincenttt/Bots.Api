@@ -47,7 +47,7 @@ serviceCollection.AddBotsApiServices(configuration.GetSection("BotsConfiguration
 
 You will now be able to inject the `IBotsOrderApi` and `IBotsPositionApi` classes in your application. If you do not want to use dependency injection, you can create the classes manually as follows:
 ```c#
-var positionApi = new BotsOrderApi(Options.Create(new BotsConfiguration {
+var orderApi = new BotsOrderApi(Options.Create(new BotsConfiguration {
     BaseEndpoint = "https://signal.revenyou.io/paper/api/signal/",
     SignalProvider = "<your-signal-provider>",
     SignalProviderKey = "<your-signal-provider-key>"
