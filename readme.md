@@ -1,7 +1,7 @@
 # Bots.Api
 ![](https://github.com/Viincenttt/Bots.Api/workflows/Bots.Api%20-%20Build%20and%20test/badge.svg)
 
-This project allows you to easily communicate with the bots.io API using C# and .NET. Bots.io has provided documentation for their API which I highly recommend you read before using this library. 
+This project allows you to easily communicate with the bots.io API using C# and .NET. Bots.io has provided [documentation](https://docs.revenyou.io/) for their API which I highly recommend you read before using this library. 
 
 ## Support
 If you have encounter any issues while using this library or have any feature requests, feel free to open an issue on GitHub. If you need fast support or need help integrating the api client in your .NET application, feel free to contact me on [LinkedIn](https://www.linkedin.com/in/vincent-kok-4aa44211/). 
